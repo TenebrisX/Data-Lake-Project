@@ -1,23 +1,56 @@
-# Проект 7-го спринта
+# Data Lake Project
 
-### Описание
-Репозиторий предназначен для сдачи проекта 7-го спринта
+This project analyzes messaging data to provide insights into user behavior, geographic trends, and potential friend recommendations.
 
-### Как работать с репозиторием
-1. В вашем GitHub-аккаунте автоматически создастся репозиторий `de-project-sprint-7` после того, как вы привяжете свой GitHub-аккаунт на Платформе.
-2. Скопируйте репозиторий на свой компьютер. В качестве пароля укажите ваш `Access Token`, который нужно получить на странице [Personal Access Tokens](https://github.com/settings/tokens)):
-	* `git clone https://github.com/{{ username }}/de-project-sprint-7.git`
-3. Перейдите в директорию с проектом: 
-	* `cd de-project-sprint-7`
-4. Выполните проект и сохраните получившийся код в локальном репозитории:
-	* `git add .`
-	* `git commit -m 'my best commit'`
-5. Обновите репозиторий в вашем GutHub-аккаунте:
-	* `git push origin main`
+## Data Processing
 
-### Структура репозитория
-Вложенные файлы в репозиторий будут использоваться для проверки и предоставления обратной связи по проекту. Поэтому постарайтесь публиковать ваше решение согласно установленной структуре — так будет проще соотнести задания с решениями.
+The project utilizes the following data processing steps:
 
-Внутри `src` расположены две папки:
-- `/src/dags`;
-- `/src/sql`.
+1. **Data Loading:** Loads events and geo data into Spark DataFrames.
+2. **Data Cleaning:** Handles missing values, inconsistencies, and potential errors.
+3. **Geospatial Calculations:** Determines the nearest city for each event and calculates distances between users.
+4. **User Analysis:** Calculates metrics such as:
+   * User activity within zones
+   * Home city determination based on consecutive days spent in a location
+   * Travel patterns identification  
+
+5. **Friend Recommendations:** Generates friend recommendations based on:
+   * Shared subscriptions to channels
+   * Geographical proximity (users within a specified distance)
+
+## Datamarts
+
+The project creates the following datamarts for easy consumption of analytical results:
+
+* **User Datamart:**
+   * User ID
+   * Last known city
+   * Potential home city
+   * Travel history
+   * Local time information 
+
+* **Zone Datamart:**
+   * Zone (city) ID
+   * Week 
+   * Month
+   * Number of messages sent
+   * Number of reactions 
+   * Number of subscriptions
+   * Number of new users (registrations)
+
+* **Friend Recommendations Datamart:**
+   * User ID (potential friend)
+   * Recommended User ID
+   * Distance between users
+   * Processing datetime
+
+## Technologies Used
+
+* **Spark:** Distributed data processing framework for efficient handling of large datasets.
+* **Python:** Programming language used for data manipulation, analysis, and recommendation logic.
+* **PySpark:** Python API for Spark.
+* **Apache Hadoop:**  An open source framework based on Java that manages the storage and processing of large amounts of data for applications.
+* **Apache Airflow** An open-source workflow management platform for data engineering pipelines.
+* **Docker** A software platform that allows you to build, test, and deploy applications quickly.
+* **YARN** Allocating system resources to the various applications running in a Hadoop cluster and scheduling tasks to be executed on different cluster nodes.
+* **Jupiter** A web-based application used to create and share interactive notebook documents.
