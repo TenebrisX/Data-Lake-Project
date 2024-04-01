@@ -89,7 +89,9 @@ def determine_home_city(events_geo_df, min_duration_days=27):
 
     result = events_geo_df \
         .join(subquery, ['user_id', 'city'], 'inner') \
-        .selectExpr('user_id', 'city as home_city')
+        .selectExpr('user_id', 'city as home_city') \
+        .filter('total_days >= {}'.format(min_duration_days)) \
+        .filter('days_in_city >= {}'.format(min_duration_days))
 
     return result
         
@@ -114,8 +116,7 @@ def calculate_travel(events_geo_df):
         .agg(
             F.count('city').alias('travel_count'),
             F.collect_list('city').alias('travel_array')
-        ) \
-        .persist()  # Consider persisting if this DataFrame is reused
+        )
 
     return travel_city_df
 

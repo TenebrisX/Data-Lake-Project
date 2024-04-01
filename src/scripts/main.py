@@ -69,9 +69,6 @@ def create_user_datamart(events_path, cities_path, output_path):
     except Exception as e:
         logger.error(f"User datamart creation failed: {e}")
 
-    except Exception as e:
-        logger.error(f"User datamart creation failed: {e}")
-
 
 def create_zones_datamart(events_path, cities_path, output_path):
     """

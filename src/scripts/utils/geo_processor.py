@@ -35,8 +35,6 @@ class GeoProcessor:
             .selectExpr('date', 'user', 'event_type', 'message_from as user_id', 'id as zone_id', 'distance', 'message_id') \
             .withColumn('row_number', F.row_number().over(Window.partitionBy('message_id').orderBy('distance'))) \
             .filter(F.col('row_number') == 1) \
-            .withColumn('month', F.trunc(F.col('date'), 'month')) \
-            .withColumn('week', F.trunc(F.col('date'), 'week')) \
             .persist()
 
         logger.info("Nearest zones calculated successfully")

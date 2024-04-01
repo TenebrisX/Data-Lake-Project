@@ -25,6 +25,8 @@ class AnalyticsEngine:
         # Registrations (assuming 'message_from' indicates new user)
         window_rn = Window.partitionBy('user_id').orderBy(F.col('date').desc())
         registrations_df = self.events_geo_df \
+            .withColumn('month', F.trunc(F.col('date'), 'month')) \
+            .withColumn('week', F.trunc(F.col('date'), 'week')) \
             .where('user_id is not null') \
             .withColumn('rn', F.row_number().over(window_rn)) \
             .where('rn = 1') \
